@@ -6,7 +6,7 @@
 # ]
 # ///
 
-#=tmux:
+#=tmux
 #$save or restore tmux contents
 #@usage:
 #@save_restore_tmux.py s
