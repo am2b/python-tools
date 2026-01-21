@@ -7,7 +7,7 @@
 # ///
 
 #=tools
-#$邮件助手
+#$邮件助手(拷贝邮件地址和邮件正文)
 #@usage:
 #@mail_helper.py copy-address
 #@mail_helper.py copy-lines
