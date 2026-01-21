@@ -9,7 +9,8 @@
 #=tools
 #$邮件助手
 #@usage:
-#@
+#@mail_helper.py copy-address
+#@mail_helper.py copy-lines
 
 import subprocess
 from pathlib import Path
