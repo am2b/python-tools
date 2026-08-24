@@ -14,6 +14,11 @@ import os
 import shutil
 import subprocess
 
+def resolve_path(s: str):
+    s1 = os.path.expanduser(s)
+    s2 = os.path.expandvars(s1)
+    return s2
+
 def parse_manifest(file_path: str):
     orig_filename = None
     chunk_files = []
@@ -74,17 +79,18 @@ def main():
         print("示例: ./restore_file_from_pool.py pool_path manifest.txt out_path")
         sys.exit(1)
 
-    pool_path = sys.argv[1]
-    manifest_path = sys.argv[2]
+    pool_path = resolve_path(sys.argv[1])
+    manifest_path = resolve_path(sys.argv[2])
     #输出目录默认为命令行的工作目录
     out_path = sys.argv[3] if len(sys.argv) >= 4 else os.getcwd()
+    out_path = resolve_path(out_path)
 
     if not os.path.isfile(manifest_path):
-        print(f"错误:文件不存在{manifest_path}")
+        print(f"错误:文件不存在:{manifest_path}")
         sys.exit(1)
 
     if not os.path.isdir(pool_path):
-        print(f"错误:文件分片池目录不存在{pool_path}")
+        print(f"错误:文件分片池目录不存在:{pool_path}")
         sys.exit(1)
 
     data = parse_manifest(manifest_path)
@@ -98,7 +104,7 @@ def main():
     for chunk_name in data['chunk_list']:
         chunk_path = os.path.join(pool_path,chunk_name)
         if not os.path.isfile(chunk_path):
-            print(f"错误:文件分片{chunk_name},不在文件池中")
+            print(f"错误:文件分片:{chunk_name},不在文件池中")
             sys.exit(1)
         shutil.move(chunk_path,parts_dir)
 
