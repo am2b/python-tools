@@ -8,6 +8,7 @@
 #$从"文件分片池"里面恢复一个文件,默认恢复到命令行的当前工作目录
 #@usage:
 #@script pool_path manifest.txt [out_path]
+#@注意:如果manifest.txt文件名中包含空格的话,那么需要用单引号将其括起来
 
 import sys
 import os
