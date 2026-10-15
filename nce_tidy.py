@@ -6,7 +6,6 @@
 # ]
 # ///
 
-import os
 import sys
 from enum import StrEnum
 from pathlib import Path
@@ -121,6 +120,10 @@ def writes(file):
     if not new_words:
         raise NceError("写的时候发现没有单词")
 
+    # 如果要写的文件已经存在了
+    if file.is_file():
+        raise NceError(f"输出文件:{file}已经存在了")
+
     # file.write_text("".join(lines)
     with file.open("w", encoding="utf-8") as f:
         f.writelines(title)
@@ -135,16 +138,22 @@ def main():
 
     args_num = len(sys.argv)
     if args_num == 1 or args_num > 3:
-        raise NceError("用法: python new_words.py input_file.raw [output_file.txt]")
+        raise NceError("用法: python new_words.py input_file.nce [output_file.txt]")
 
     input_file = sys.argv[1]
     input_file = Path(input_file)
+    input_suffix = input_file.suffix.lower()
+    # 如果有后缀,但是后缀不是.nce
+    if input_suffix and input_suffix != ".nce":
+        raise NceError(f"输入文件:{input_file}的后缀名不是.nce")
 
+    # 如果没有后缀,那么就自动添加.nce后缀
+    if not input_suffix:
+        input_file = input_file.with_suffix(".nce")
+
+    # 检查输入文件是否存在
     if not input_file.is_file():
         raise NceError(f"输入文件:{input_file}不存在")
-
-    if input_file.suffix.lower() != ".raw":
-        raise NceError(f"输入文件:{input_file}的后缀名不是.raw")
 
     if args_num == 3:
         output_file = Path(sys.argv[2])
